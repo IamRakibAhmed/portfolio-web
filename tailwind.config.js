@@ -14,8 +14,10 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        poppins: ['var(--font-poppins)', 'sans-serif'],
+        title: ['var(--font-title)', 'sans-serif'],
       },
     },
   },
   plugins: [],
-} 
+}

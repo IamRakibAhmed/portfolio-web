@@ -441,7 +441,7 @@ export default function Hero() {
             {/* Name with typing animation */}
             <div className="mb-4 relative">
               <motion.h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold font-title"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -486,7 +486,7 @@ export default function Hero() {
             
             {/* Bio text with reveal animation */}
             <motion.p 
-              className="text-sm sm:text-base md:text-lg max-w-md text-gray-600 dark:text-gray-300 mb-8 leading-relaxed mx-auto px-4 sm:px-0"
+              className="text-sm sm:text-base md:text-lg max-w-md text-gray-600 dark:text-gray-300 mb-8 leading-relaxed mx-auto px-4 sm:px-0 font-poppins"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: nameComplete ? 1 : 0, y: nameComplete ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.2 }}

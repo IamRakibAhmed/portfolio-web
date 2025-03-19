@@ -11,7 +11,7 @@ const projects = [
     id: 1,
     title: 'Bengali Parts-of-Speech Tagger',
     description: 'Created and deployed an NLP model that can predict the Parts-of-Speech of a given Bengali word or sequence with 98.39% accuracy.',
-    image: '/images/placeholder.jpg',
+    image: 'https://images.unsplash.com/photo-1555952494-efd681c7e3f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG5hdHVyYWwlMjBsYW5ndWFnZSUyMHByb2Nlc3Npbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60',
     tags: ['Python', 'TensorFlow', 'Keras', 'LSTM', 'NLP'],
     category: 'ai',
     github: 'https://github.com/IamRakibAhmed',
@@ -21,7 +21,7 @@ const projects = [
     id: 2,
     title: 'Bengali Next Word Prediction',
     description: 'Developed a system that can predict the next word of a given word or sequence and complete the whole sentence with 84.13% accuracy.',
-    image: '/images/placeholder.jpg',
+    image: 'https://images.unsplash.com/photo-1535378917042-10a22c95931a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFydGlmaWNpYWwlMjBpbnRlbGxpZ2VuY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60',
     tags: ['Python', 'TensorFlow', 'Keras', 'LSTM', 'NLP'],
     category: 'ai',
     github: 'https://github.com/IamRakibAhmed',
@@ -31,7 +31,7 @@ const projects = [
     id: 3,
     title: 'Profile Management System',
     description: 'A web application that manages user profiles and information. Users can log in, log out, and view other users\' profiles.',
-    image: '/images/placeholder.jpg',
+    image: 'https://images.unsplash.com/photo-1480694313141-fce5e697ee25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8d2ViJTIwYXBwbGljYXRpb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60',
     tags: ['React.js', 'Spring Boot', 'MySQL'],
     category: 'fullstack',
     github: 'https://github.com/IamRakibAhmed',
@@ -41,7 +41,7 @@ const projects = [
     id: 4,
     title: 'Video Recorder using Webcam',
     description: 'Windows application that allows users to record videos using their webcam and microphone, with digital processing capabilities.',
-    image: '/images/placeholder.jpg',
+    image: 'https://images.unsplash.com/photo-1616763355548-1b606f439f86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2ViY2FtfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60',
     tags: ['C#', 'OpenCV', 'DirectShowLib'],
     category: 'desktop',
     github: 'https://github.com/IamRakibAhmed',
@@ -51,7 +51,7 @@ const projects = [
     id: 5,
     title: 'Smart System to Reduce High Beam Glare',
     description: 'Research project focused on developing an IoT solution to reduce high beam glare in vehicles, published in ICT4SD 2022.',
-    image: '/images/placeholder.jpg',
+    image: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     tags: ['IoT', 'Research', 'Hardware', 'Embedded Systems'],
     category: 'research',
     github: 'https://github.com/IamRakibAhmed',
@@ -61,7 +61,7 @@ const projects = [
     id: 6,
     title: 'Bank Management System',
     description: 'Banking application with digital banking features, transaction processing, and account management capabilities.',
-    image: '/images/placeholder.jpg',
+    image: 'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmFua2luZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60',
     tags: ['Java', 'Spring Boot', 'MySQL', 'React'],
     category: 'fullstack',
     github: 'https://github.com/IamRakibAhmed',
@@ -131,8 +131,8 @@ export default function Projects() {
           className="max-w-4xl mx-auto mb-16 text-center"
         >
           <span className="inline-block text-primary text-sm font-mono tracking-wider bg-gradient-to-r from-primary/10 to-accent/10 dark:from-primary/20 dark:to-accent/20 py-1 px-3 rounded-full mb-4">MY WORK</span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">Selected <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Projects</span></h2>
-          <p className="text-secondary dark:text-gray-400 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 font-title">Selected <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Projects</span></h2>
+          <p className="text-secondary dark:text-gray-400 max-w-2xl mx-auto font-poppins">
             A showcase of my recent work, ranging from web applications to software solutions 
             that solve real-world problems.
           </p>
@@ -177,9 +177,13 @@ export default function Projects() {
                   
                   {/* Project Image */}
                   <div className="h-48 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-primary/10 to-accent/10 text-gray-500 dark:text-gray-400">
-                      <span className="text-4xl">🖥️</span>
-                    </div>
+                    <Image 
+                      src={project.image} 
+                      alt={project.title}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      className="transition-transform duration-500 group-hover:scale-105"
+                    />
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 dark:from-primary/90 dark:to-accent/90 flex items-center justify-center"
                       initial={{ opacity: 0 }}
@@ -215,8 +219,8 @@ export default function Projects() {
                   
                   {/* Project Content */}
                   <div className="p-6">
-                    <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
-                    <p className="text-secondary dark:text-gray-400 text-sm mb-4 line-clamp-2">{project.description}</p>
+                    <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors font-title">{project.title}</h3>
+                    <p className="text-secondary dark:text-gray-400 text-sm mb-4 line-clamp-2 font-poppins">{project.description}</p>
                     
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2">

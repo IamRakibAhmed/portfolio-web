@@ -1,9 +1,21 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Inter, Poppins, DM_Sans } from 'next/font/google';
 import type { Metadata } from 'next';
 import ScrollToTop from './components/ScrollToTop';
 
 const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({ 
+  weight: ['300', '400', '500', '600'],
+  subsets: ['latin'],
+  variable: '--font-poppins',
+});
+
+// Google Font similar to Product Sans
+const titleFont = DM_Sans({ 
+  weight: ['400', '500', '700'],
+  subsets: ['latin'],
+  variable: '--font-title',
+});
 
 export const metadata: Metadata = {
   title: 'Software Engineer Portfolio',
@@ -17,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-light dark:bg-dark text-dark dark:text-light`}>
+      <body className={`${inter.className} ${poppins.variable} ${titleFont.variable} bg-light dark:bg-dark text-dark dark:text-light`}>
         {children}
         <ScrollToTop />
       </body>

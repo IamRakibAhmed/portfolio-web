@@ -51,7 +51,7 @@ export default function About() {
 
   const experienceItems = [
     { 
-      title: 'Senior Software Development Officer',
+      title: 'Senior Software Engineer',
       company: 'The City Bank PLC',
       period: 'Mar 2022 - Present',
       description: 'Leading development of scalable banking applications using Java, Spring Boot, and microservices architecture.',
@@ -108,13 +108,13 @@ export default function About() {
             </motion.span>
             <motion.h2 
               variants={itemVariants}
-              className="text-3xl md:text-4xl font-bold mb-4"
+              className="text-3xl md:text-4xl font-bold mb-4 font-title"
             >
               Experience & <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Background</span>
             </motion.h2>
             <motion.p 
             variants={itemVariants}
-              className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+              className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-poppins"
             >
               With 4+ years of experience in Software Engineering, I'm passionate about creating exceptional digital experiences through clean code and modern technologies.
             </motion.p>
@@ -279,7 +279,7 @@ export default function About() {
                           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                           className="h-full"
                         >
-                          <h4 className="text-lg font-medium">
+                          <h4 className="text-lg font-medium font-title">
                             {experienceItems[expandedItem].title}
                           </h4>
                           <p className="text-primary font-medium text-sm mb-3">
@@ -348,7 +348,7 @@ export default function About() {
                         <path d="M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z" />
                       </svg>
                     </div>
-                    <p className="font-bold text-lg leading-tight">B.Sc. in Computer Science & Engineering</p>
+                    <p className="font-bold text-lg leading-tight font-title">B.Sc. in Computer Science & Engineering</p>
                   </div>
                   
                   {/* University */}
@@ -356,7 +356,7 @@ export default function About() {
                     <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center mr-3">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-gray-500 mb-4">
                         <path d="M11.584 2.376a.75.75 0 01.832 0l9 6a.75.75 0 11-.832 1.248L12 3.901 3.416 9.624a.75.75 0 01-.832-1.248l9-6z" />
-                        <path fill-rule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 010 1.5H3a.75.75 0 010-1.5h.75v-9.918a.75.75 0 01.634-.74A49.109 49.109 0 0112 9c2.59 0 5.134.202 7.616.592a.75.75 0 01.634.74zm-7.5 2.418a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75zm3-.75a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0v-6.75a.75.75 0 01.75-.75zM9 12.75a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75z" clip-rule="evenodd" />
+                        <path fillRule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 010 1.5H3a.75.75 0 010-1.5h.75v-9.918a.75.75 0 01.634-.74A49.109 49.109 0 0112 9c2.59 0 5.134.202 7.616.592a.75.75 0 01.634.74zm-7.5 2.418a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75zm3-.75a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0v-6.75a.75.75 0 01.75-.75zM9 12.75a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75z" clipRule="evenodd" />
                         <path d="M12 7.875a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" />
                       </svg>
                     </div>

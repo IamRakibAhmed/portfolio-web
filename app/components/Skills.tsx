@@ -3,7 +3,18 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 
-const skills = {
+// Define types for skills
+type SkillItem = {
+  name: string;
+  level: string;
+  icon: string;
+};
+
+type SkillsData = {
+  [key: string]: SkillItem[];
+};
+
+const skills: SkillsData = {
   frontend: [
     { name: 'React', level: 'Advanced', icon: '⚛️' },
     { name: 'TypeScript', level: 'Advanced', icon: '𝐓𝐒' },
@@ -99,7 +110,7 @@ export default function Skills() {
   // Progress bar animation
   const progressVariants = {
     hidden: { width: 0 },
-    visible: (level) => ({
+    visible: (level: string) => ({
       width: level === 'Advanced' ? '100%' : level === 'Intermediate' ? '65%' : '40%',
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
     })
@@ -142,7 +153,7 @@ export default function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-3xl md:text-4xl font-bold mt-2 mb-4"
+              className="text-3xl md:text-4xl font-bold mt-2 mb-4 font-title"
             >
               Technical <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Skills</span>
             </motion.h2>
@@ -220,7 +231,7 @@ export default function Skills() {
                         {skill.icon}
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">
+                        <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors font-title">
                           {skill.name}
                         </h3>
                         
@@ -251,7 +262,7 @@ export default function Skills() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-16 text-center"
           >
-            <h3 className="text-xl font-bold mb-6 inline-flex items-center">
+            <h3 className="text-xl font-bold mb-6 inline-flex items-center font-title">
               <span className="mr-2">Currently <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Learning</span></span>
               <motion.div
                 animate={{ rotate: [0, 10, 0] }}

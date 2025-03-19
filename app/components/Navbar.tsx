@@ -56,10 +56,7 @@ export default function Navbar() {
             transition={{ duration: 0.5 }}
           >
             <Link href="/" className="relative group">
-              <span className="text-lg font-bold">
-                <span className="text-primary">rakib</span>
-                <span className="text-dark dark:text-light"> ahmed</span>
-              </span>
+              <span className="text-lg font-bold font-title"><span className="text-primary">rakib</span><span className="text-dark dark:text-light"> ahmed</span></span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
             </Link>
           </motion.div>

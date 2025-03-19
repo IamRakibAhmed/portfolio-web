@@ -141,7 +141,7 @@ export default function Footer() {
             {/* Brand column */}
             <motion.div variants={fadeUp} className="col-span-12 md:col-span-5 lg:col-span-4 space-y-6">
               <Link href="/" className="inline-block">
-                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent">Rakib Ahmed</h2>
+                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent font-title">Rakib Ahmed</h2>
               </Link>
               <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs leading-relaxed">
                 Creating exceptional digital experiences with modern technology and minimalist design principles.
@@ -173,7 +173,7 @@ export default function Footer() {
             
             {/* Contact column with enhanced styling - This replaces the navigation column */}
             <motion.div variants={fadeUp} className="col-span-6 md:col-span-3 lg:col-span-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6">Contact</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6 font-title">Contact</h3>
               <ul className="space-y-4">
                 <li className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400 group">
                   <div className="p-2 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200/50 dark:border-gray-800/50 group-hover:border-primary transition-colors duration-200">
@@ -210,13 +210,13 @@ export default function Footer() {
             
             {/* Newsletter subscription */}
             <motion.div variants={fadeUp} className="col-span-12 md:col-span-4 lg:col-span-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6">Stay Updated</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6 font-title">Stay Updated</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Subscribe to receive latest updates and news.</p>
               <form className="flex">
                 <input 
                   type="email" 
                   placeholder="Your email" 
-                  className="flex-1 py-2 px-3 rounded-l-lg bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 backdrop-blur-sm text-sm border border-gray-200/50 dark:border-gray-800/50 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                  className="flex-1 py-2 px-3 rounded-l-lg bg-white dark:bg-gray-800 text-sm border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 />
                 <motion.button 
                   type="submit"
@@ -249,8 +249,8 @@ export default function Footer() {
             variants={fadeUp} 
             className="flex flex-col md:flex-row justify-between items-center text-center md:text-left pt-6"
           >
-            <p className="text-xs text-gray-500 dark:text-gray-500 mb-4 md:mb-0">
-              © {currentYear} <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Rakib Ahmed</span>. All rights reserved.
+            <p className="text-gray-600 dark:text-gray-400 text-sm font-poppins">
+              &copy; {new Date().getFullYear()} Rakib Ahmed. All rights reserved.
             </p>
             
             <motion.button 
