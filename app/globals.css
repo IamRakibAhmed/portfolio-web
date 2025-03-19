@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 31, 41, 55; /* dark */
+  --background-rgb: 249, 250, 251; /* light */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 249, 250, 251; /* light */
+    --background-rgb: 31, 41, 55; /* dark */
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background-color: rgb(var(--background-rgb));
+}
+
+@layer base {
+  h1 {
+    @apply text-4xl font-bold mb-4;
+  }
+  h2 {
+    @apply text-3xl font-bold mb-3;
+  }
+  h3 {
+    @apply text-2xl font-bold mb-2;
+  }
+  p {
+    @apply mb-4;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors;
+  }
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-blue-600;
+  }
+  .section {
+    @apply py-16;
+  }
+  .container {
+    @apply max-w-6xl mx-auto px-4;
+  }
+} 
