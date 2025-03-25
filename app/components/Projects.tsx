@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -80,6 +80,47 @@ const categories = [
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [categoryPositions, setCategoryPositions] = useState<{ [key: string]: { left: number, width: number } }>({});
+  const categoriesRef = useRef<HTMLDivElement>(null);
+  
+  // Function to update category positions
+  const updateCategoryPositions = useCallback(() => {
+    if (categoriesRef.current) {
+      const container = categoriesRef.current;
+      const buttons = container.querySelectorAll('button');
+      const newPositions: { [key: string]: { left: number, width: number } } = {};
+      
+      buttons.forEach((button) => {
+        const id = button.getAttribute('data-id') || '';
+        const rect = button.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        
+        newPositions[id] = {
+          left: rect.left - containerRect.left,
+          width: rect.width
+        };
+      });
+      
+      setCategoryPositions(newPositions);
+    }
+  }, []);
+  
+  // Effect for initial mounting and updates
+  useEffect(() => {
+    // Update positions after a short delay to ensure DOM is fully rendered
+    const timer = setTimeout(() => {
+      updateCategoryPositions();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [updateCategoryPositions]);
+  
+  // Update positions when categories or window size changes
+  useEffect(() => {
+    updateCategoryPositions();
+    window.addEventListener('resize', updateCategoryPositions);
+    return () => window.removeEventListener('resize', updateCategoryPositions);
+  }, [activeCategory, updateCategoryPositions]);
   
   const filteredProjects = activeCategory === 'all' 
     ? projects 
@@ -137,21 +178,39 @@ export default function Projects() {
             that solve real-world problems.
           </p>
           
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center mt-10 gap-3">
-            {categories.map(category => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-5 py-2 rounded-full text-sm font-medium ${
-                  activeCategory === category.id
-                    ? 'bg-gradient-to-r from-primary to-accent text-white shadow-md'
-                    : 'bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 text-gray-700 dark:text-gray-300 border-0'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
+          {/* Category Filter - Redesigned to match Skills section */}
+          <div className="flex justify-center mt-10">
+            <div 
+              ref={categoriesRef}
+              className="inline-flex p-1 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 rounded-full shadow-sm border border-gray-100/50 dark:border-gray-800/50 relative"
+            >
+              {categoryPositions[activeCategory] && (
+                <span 
+                  className="absolute bg-gradient-to-r from-primary/70 to-accent/70 rounded-full transition-all duration-300 ease-in-out opacity-40 backdrop-blur-sm"
+                  style={{
+                    top: '6px',
+                    left: categoryPositions[activeCategory].left + 6,
+                    width: categoryPositions[activeCategory].width - 12,
+                    height: 'calc(100% - 12px)',
+                    zIndex: 0
+                  }}
+                />
+              )}
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  data-id={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 z-10 ${
+                    activeCategory === category.id ? 
+                      'text-white' : 
+                      'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
           </div>
         </motion.div>
         

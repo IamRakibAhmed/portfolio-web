@@ -1,0 +1,55 @@
+{
+  "name": "Rakib Ahmed",
+  "url": "https://rakibahmed.com",
+  "sameAs": [
+    "https://github.com/IamRakibAhmed",
+    "https://linkedin.com/in/iamrakibahmed"
+  ],
+  "jobTitle": "Senior Software Development Officer",
+  "worksFor": "The City Bank PLC",
+  "address": {
+    "addressLocality": "Dhaka",
+    "addressRegion": "Dhaka",
+    "postalCode": "1216",
+    "addressCountry": "Bangladesh"
+  },
+  "email": "rakibofficial@gmail.com",
+  "description": "Senior Software Engineer specializing in Java, Spring Boot, Microservices, React, and Cloud technologies with experience in banking software and NLP projects.",
+  "skills": [
+    "Java", "Spring Boot", "Microservices", "React", 
+    "Docker", "Kubernetes", "REST API", "MySQL", 
+    "MongoDB", "Machine Learning", "NLP", "Python",
+    "TypeScript", "JavaScript", "C#", "C++", "Git",
+    "Kafka", "ELK Stack", "CI/CD", "Jenkins"
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science - Computer Science and Engineering",
+      "institution": "University of Liberal Arts Bangladesh",
+      "startDate": "2019-02",
+      "endDate": "2022-10"
+    }
+  ],
+  "experience": [
+    {
+      "position": "Senior Software Development Officer",
+      "company": "The City Bank PLC",
+      "startDate": "2022-03",
+      "current": true,
+      "location": "Dhaka, Bangladesh"
+    },
+    {
+      "position": "Software Engineer",
+      "company": "Apurba Technologies Ltd.",
+      "startDate": "2020-11",
+      "endDate": "2022-02",
+      "location": "Dhaka, Bangladesh"
+    }
+  ],
+  "projects": [
+    "Bengali Parts-of-Speech Tagger",
+    "Bengali Next Word Prediction",
+    "Profile Management System",
+    "Video Recorder using Webcam"
+  ]
+} 

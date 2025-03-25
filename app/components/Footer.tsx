@@ -7,7 +7,7 @@ import { useRef } from 'react';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const footerRef = useRef(null);
-  const isInView = useInView(footerRef, { once: false, amount: 0.1 });
+  const isInView = useInView(footerRef, { once: true, amount: 0.1 });
   
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -29,6 +29,22 @@ export default function Footer() {
         staggerChildren: 0.1,
         delayChildren: 0.1
       }
+    }
+  };
+  
+  // Separate social icon animation variants
+  const socialIconVariants = {
+    initial: { 
+      y: 0, 
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.03)'
+    },
+    hover: { 
+      y: -2, 
+      boxShadow: '0 8px 16px -4px rgba(79, 70, 229, 0.12), 0 0 0 1px rgba(79, 70, 229, 0.05)'
+    },
+    tap: {
+      y: 0,
+      boxShadow: '0 3px 6px -2px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(79, 70, 229, 0.1)'
     }
   };
   
@@ -141,9 +157,9 @@ export default function Footer() {
             {/* Brand column */}
             <motion.div variants={fadeUp} className="col-span-12 md:col-span-5 lg:col-span-4 space-y-6">
               <Link href="/" className="inline-block">
-                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent font-title">Rakib Ahmed</h2>
+                <h2 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent font-title">Rakib Ahmed</h2>
               </Link>
-              <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-xs leading-relaxed font-poppins">
                 Creating exceptional digital experiences with modern technology and minimalist design principles.
               </p>
               
@@ -155,17 +171,38 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/80 text-gray-700 dark:text-gray-300 flex items-center justify-center rounded-xl backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 hover:text-primary hover:border-primary dark:hover:text-primary dark:hover:border-primary transition-all duration-300 shadow-sm"
-                    variants={fadeUp}
-                    whileHover={{ 
-                      y: -5, 
-                      boxShadow: '0 15px 30px -10px rgba(79, 70, 229, 0.25)',
-                      scale: 1.05
+                    className="w-10 h-10 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/80 text-gray-700 dark:text-gray-300 flex items-center justify-center rounded-xl backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 group relative overflow-hidden"
+                    initial={{ y: 0, boxShadow: '0 2px 4px rgba(0, 0, 0, 0.03)' }}
+                    whileHover={{ y: -2, boxShadow: '0 8px 16px -4px rgba(79, 70, 229, 0.12), 0 0 0 1px rgba(79, 70, 229, 0.05)' }}
+                    whileTap={{ y: 0, boxShadow: '0 3px 6px -2px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(79, 70, 229, 0.1)' }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 30,
+                      mass: 0.8
                     }}
-                    whileTap={{ scale: 0.95 }}
                     aria-label={link.name}
                   >
-                    {link.icon}
+                    {/* Subtle gradient background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:to-accent/10 dark:group-hover:from-primary/10 dark:group-hover:to-accent/15 transition-colors ease-out duration-200 -z-10"></div>
+                    
+                    {/* Subtle glow effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 rounded-full bg-primary/5 dark:bg-primary/10 blur-lg transform scale-150"></div>
+                    </div>
+                    
+                    {/* Icon with subtle scale and color transition */}
+                    <motion.div
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ 
+                        type: "spring", 
+                        stiffness: 400, 
+                        damping: 15 
+                      }}
+                      className="relative z-10 text-gray-700 dark:text-gray-300 group-hover:text-primary dark:group-hover:text-primary transition-colors duration-200"
+                    >
+                      {link.icon}
+                    </motion.div>
                   </motion.a>
                 ))}
               </div>
@@ -173,9 +210,9 @@ export default function Footer() {
             
             {/* Contact column with enhanced styling - This replaces the navigation column */}
             <motion.div variants={fadeUp} className="col-span-6 md:col-span-3 lg:col-span-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6 font-title">Contact</h3>
+              <h3 className="text-xs md:text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6 font-title">Contact</h3>
               <ul className="space-y-4">
-                <li className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400 group">
+                <li className="flex items-start space-x-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400 group font-poppins">
                   <div className="p-2 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200/50 dark:border-gray-800/50 group-hover:border-primary transition-colors duration-200">
                     <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -184,11 +221,11 @@ export default function Footer() {
                   <a href="mailto:rakibofficial@gmail.com" 
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="hover:text-primary transition-colors duration-200 pt-1 text-xs sm:text-sm break-all sm:break-normal">
+                     className="hover:text-primary transition-colors duration-200 pt-1 text-xs sm:text-sm break-all sm:break-normal font-poppins">
                     rakibofficial@gmail.com
                   </a>
                 </li>
-                <li className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400 group">
+                <li className="flex items-start space-x-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400 group font-poppins">
                   <div className="p-2 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200/50 dark:border-gray-800/50 group-hover:border-primary transition-colors duration-200">
                     <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -197,7 +234,7 @@ export default function Footer() {
                   </div>
                   <span className="pt-1">Dhaka, Bangladesh</span>
                 </li>
-                <li className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400 group">
+                <li className="flex items-start space-x-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400 group font-poppins">
                   <div className="p-2 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200/50 dark:border-gray-800/50 group-hover:border-primary transition-colors duration-200">
                     <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -210,17 +247,17 @@ export default function Footer() {
             
             {/* Newsletter subscription */}
             <motion.div variants={fadeUp} className="col-span-12 md:col-span-4 lg:col-span-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6 font-title">Stay Updated</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Subscribe to receive latest updates and news.</p>
+              <h3 className="text-xs md:text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-200 mb-6 font-title">Stay Updated</h3>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 font-poppins">Subscribe to receive latest updates and news.</p>
               <form className="flex">
                 <input 
                   type="email" 
                   placeholder="Your email" 
-                  className="flex-1 py-2 px-3 rounded-l-lg bg-white dark:bg-gray-800 text-sm border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                  className="flex-1 py-2 px-3 rounded-l-lg bg-white dark:bg-gray-800 text-xs sm:text-sm border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary font-poppins"
                 />
                 <motion.button 
                   type="submit"
-                  className="bg-gradient-to-r from-primary to-accent text-white py-2 px-4 rounded-r-lg text-sm font-medium"
+                  className="bg-gradient-to-r from-primary to-accent text-white py-2 px-4 rounded-r-lg text-xs sm:text-sm font-medium font-poppins"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -230,18 +267,27 @@ export default function Footer() {
             </motion.div>
           </div>
           
-          {/* Divider with enhanced design */}
+          {/* Sophisticated minimal divider */}
           <motion.div 
             variants={fadeUp}
-            className="relative h-px w-full bg-gradient-to-r from-transparent via-primary/30 dark:via-primary/40 to-transparent mb-8"
+            className="relative h-px w-full mb-8 overflow-hidden"
           >
+            {/* Base line with gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/30 dark:via-primary/40 to-transparent" />
+            
+            {/* Animated spotlight effect */}
             <motion.div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 backdrop-blur-sm rounded-full border border-gray-200/50 dark:border-gray-800/50 flex items-center justify-center"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              <div className="w-5 h-5 bg-gradient-to-r from-primary via-purple-500 to-accent rounded-full shadow-[0_0_10px_rgba(79,70,229,0.5)]" />
-            </motion.div>
+              className="absolute inset-y-0 w-[30%] bg-gradient-to-r from-transparent via-primary/60 dark:via-primary/70 to-transparent"
+              animate={{
+                x: ["-100%", "200%"],
+              }}
+              transition={{
+                duration: 3.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                repeatDelay: 2
+              }}
+            />
           </motion.div>
           
           {/* Copyright with improved layout */}
@@ -249,13 +295,13 @@ export default function Footer() {
             variants={fadeUp} 
             className="flex flex-col md:flex-row justify-between items-center text-center md:text-left pt-6"
           >
-            <p className="text-gray-600 dark:text-gray-400 text-sm font-poppins">
+            <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed font-poppins">
               &copy; {new Date().getFullYear()} Rakib Ahmed. All rights reserved.
             </p>
             
             <motion.button 
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="group inline-flex items-center text-xs text-gray-500 hover:text-primary transition-colors duration-200"
+              className="group inline-flex items-center text-xs text-gray-500 hover:text-primary transition-colors duration-200 font-poppins mt-4 md:mt-0"
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.97 }}
             >

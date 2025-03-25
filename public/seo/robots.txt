@@ -1,0 +1,11 @@
+# robots.txt for rakibahmed.com
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://rakibahmed.com/sitemap.xml
+
+# Disallow private or admin areas if any exist in the future
+# User-agent: *
+# Disallow: /admin/
+# Disallow: /private/ 

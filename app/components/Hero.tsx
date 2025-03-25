@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, useInView, useAnimation, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useInView, throttle } from '../utils/hooks';
+import { fadeInUp, slideInFromLeft, slideInFromRight, buttonHover, buttonTap } from '../utils/animations';
 
 // Define types for animation data
 interface WavePoint {
@@ -18,18 +20,18 @@ interface AnimationData {
 
 export default function Hero() {
   const heroRef = useRef(null);
-  const isInView = useInView(heroRef, { once: false });
+  const isInView = useInView(heroRef, { once: true, margin: "0px" });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
-  // Track mouse movement with reduced sensitivity for subtle interactions
+  // Track mouse movement with throttling for performance
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = throttle((e: MouseEvent) => {
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       const x = (clientX / innerWidth - 0.5) * 0.3;
       const y = (clientY / innerHeight - 0.5) * 0.3;
       setMousePosition({ x, y });
-    };
+    }, 50); // Throttle to 50ms for smoother performance
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
@@ -80,18 +82,11 @@ export default function Hero() {
     };
   }, [isInView, fullName]);
 
-  // Client-side animation data generation for algorithmic waves
-  const [animationData, setAnimationData] = useState<AnimationData>({ 
-    wavePoints: [], 
-    gridLines: [],
-    dataPoints: []
-  });
-  
-  // Generate animation data on client-side only
-  useEffect(() => {
+  // Generate animation data on mount only using useMemo to avoid re-calculations
+  const animationData = useMemo<AnimationData>(() => {
     // Generate waves data
-    const waveCount = 5; // Increased number of wave lines
-    const pointCount = 120; // Increased points per wave
+    const waveCount = 5; // Wave lines
+    const pointCount = 120; // Points per wave
     const wavePoints: WavePoint[][] = [];
     const dataPoints: { x: number; y: number; size: number }[] = [];
     
@@ -130,7 +125,7 @@ export default function Hero() {
           if (distance < 5) {
             const midX = (wave1.x + wave2.x) / 2;
             const midY = (wave1.y + wave2.y) / 2;
-            const size = 1.2 + Math.random() * 0.6; // Increased size for better visibility
+            const size = 1.2 + Math.random() * 0.6; 
             dataPoints.push({ x: midX, y: midY, size });
           }
         }
@@ -139,12 +134,12 @@ export default function Hero() {
     
     // Generate refined grid lines
     const gridLines = [];
-    const gridSize = 8; // More grid lines for a refined appearance
+    const gridSize = 8; 
     
-    // Horizontal lines (spaced differently)
+    // Horizontal lines
     for (let i = 1; i < gridSize; i++) {
       if (i % 2 === 0) continue; // Skip every other line for sparser grid
-      const y = (i / gridSize) * 85 + 7.5; // Adjusted to cover more area
+      const y = (i / gridSize) * 85 + 7.5; 
       gridLines.push({
         id: i,
         x1: 5,
@@ -154,10 +149,10 @@ export default function Hero() {
       });
     }
     
-    // Vertical lines (spaced differently)
+    // Vertical lines
     for (let i = 1; i < gridSize; i++) {
       if (i % 2 === 0) continue; // Skip every other line for sparser grid
-      const x = (i / gridSize) * 85 + 7.5; // Adjusted to cover more area
+      const x = (i / gridSize) * 85 + 7.5; 
       gridLines.push({
         id: i + gridSize,
         x1: x,
@@ -167,7 +162,7 @@ export default function Hero() {
       });
     }
     
-    setAnimationData({ wavePoints, gridLines, dataPoints });
+    return { wavePoints, gridLines, dataPoints };
   }, []);
 
   // Helper function to convert points to SVG path
@@ -176,7 +171,7 @@ export default function Hero() {
     
     let path = `M ${points[0].x} ${points[0].y}`;
     
-    // Use a smooth curve for transitions between points
+    // Use a simple line for improved performance
     for (let i = 1; i < points.length; i++) {
       path += ` L ${points[i].x} ${points[i].y}`;
     }
@@ -203,7 +198,7 @@ export default function Hero() {
         }}
         transition={{
           duration: 8,
-          repeat: Infinity,
+          repeat: 0,
           ease: "easeInOut"
         }}
       />
@@ -216,7 +211,7 @@ export default function Hero() {
           x: [0, 20, 0],
           opacity: [0.4, 0.7, 0.4] 
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 10, repeat: 0, ease: "easeInOut" }}
       />
       <motion.div 
         className="absolute bottom-10 right-[10%] w-96 h-96 bg-gradient-to-br from-accent/20 to-primary/10 rounded-full blur-[120px] dark:from-accent/15 dark:to-primary/10"
@@ -225,7 +220,7 @@ export default function Hero() {
           x: [0, -20, 0],
           opacity: [0.3, 0.6, 0.3] 
         }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        transition={{ duration: 12, repeat: 0, ease: "easeInOut", delay: 1 }}
       />
       
       <div className="container mx-auto px-4 z-10">
@@ -236,7 +231,7 @@ export default function Hero() {
             {/* Practical Algorithmic Animation */}
             <div className="relative w-48 h-48 md:w-56 md:h-56 mb-6">
               {animationData.wavePoints.length > 0 && (
-      <motion.div 
+                <motion.div 
                   className="absolute inset-0"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -278,7 +273,8 @@ export default function Hero() {
                           transition={{ 
                             duration: 3,
                             delay: line.id * 0.08,
-                            times: [0, 0.7, 1]
+                            times: [0, 0.7, 1],
+                            repeat: 0
                           }}
                         />
                       ))}
@@ -409,11 +405,11 @@ export default function Hero() {
                               strokeWidth="0.4"
                               strokeOpacity="0.6"
                               initial={{ opacity: 0 }}
-        animate={{
+                              animate={{
                                 opacity: [0, 0.7, 0],
                                 pathLength: [0, 1, 0]
-        }}
-        transition={{ 
+                              }}
+                              transition={{ 
                                 duration: 3,
                                 delay: 1 + (index * 0.2),
                                 repeat: Infinity,
@@ -431,11 +427,11 @@ export default function Hero() {
             </div>
             
             {/* Subtle indicator line */}
-          <motion.div 
+            <motion.div 
               className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent mb-4"
               initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 48, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
+              animate={{ width: 48, opacity: 0.5 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
             />
             
             {/* Name with typing animation */}
@@ -486,7 +482,7 @@ export default function Hero() {
             
             {/* Bio text with reveal animation */}
             <motion.p 
-              className="text-sm sm:text-base md:text-lg max-w-md text-gray-600 dark:text-gray-300 mb-8 leading-relaxed mx-auto px-4 sm:px-0 font-poppins"
+              className="text-xs sm:text-sm md:text-base max-w-md text-gray-600 dark:text-gray-300 mb-8 leading-relaxed mx-auto px-4 sm:px-0 font-poppins"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: nameComplete ? 1 : 0, y: nameComplete ? 0 : 20 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -503,72 +499,112 @@ export default function Hero() {
             >
               <Link 
                 href="#projects" 
-                className="px-5 py-2 text-sm rounded-lg bg-gradient-to-r from-primary to-accent text-white font-medium shadow-md hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1"
+                className="px-5 py-2 text-sm rounded-lg bg-gradient-to-r from-primary to-accent text-white font-medium shadow-md hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 font-poppins"
               >
                 View My Work
               </Link>
               <Link 
                 href="#contact" 
-                className="px-5 py-2 text-sm rounded-lg bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 border border-gray-200/50 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:border-primary/20 dark:hover:border-primary/20 transform hover:-translate-y-1"
+                className="px-5 py-2 text-sm rounded-lg bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/70 border border-gray-200/50 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 font-medium shadow-sm hover:shadow-md transition-all duration-300 hover:border-primary/20 dark:hover:border-primary/20 transform hover:-translate-y-1 font-poppins"
               >
                 Contact Me
               </Link>
             </motion.div>
             
             {/* Social links with interactive animations */}
-              <motion.div 
+            <motion.div 
               className="flex items-center justify-center flex-wrap gap-3"
-                initial={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
               animate={{ opacity: nameComplete ? 1 : 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              >
+            >
               <div className="flex space-x-4">
-                  {[
-                    { name: 'GitHub', icon: 'github', href: 'https://github.com/IamRakibAhmed' },
-                    { name: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/iamrakibahmed' },
-                    { name: 'Email', icon: 'email', href: 'mailto:rakibofficial@gmail.com' }
-                  ].map((platform) => (
-                    <motion.a
-                      key={platform.name}
-                      href={platform.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm hover:border-primary dark:hover:border-primary transition-all duration-300"
-                      whileHover={{ y: -3, backgroundColor: 'rgba(79, 70, 229, 0.1)' }}
-                      whileTap={{ scale: 0.95 }}
+                {[
+                  { name: 'GitHub', icon: 'github', href: 'https://github.com/IamRakibAhmed' },
+                  { name: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/iamrakibahmed' },
+                  { name: 'Email', icon: 'email', href: 'mailto:rakibofficial@gmail.com' }
+                ].map((platform) => (
+                  <motion.a
+                    key={platform.name}
+                    href={platform.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-8 h-8 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-900/90 dark:to-gray-800/80 text-gray-700 dark:text-gray-300 flex items-center justify-center rounded-xl backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 group/${platform.icon} relative overflow-hidden`}
+                    initial="initial"
+                    whileHover="hover"
+                    whileTap="tap"
+                    variants={{
+                      initial: { 
+                        y: 0, 
+                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.03)'
+                      },
+                      hover: { 
+                        y: -2, 
+                        boxShadow: '0 8px 16px -4px rgba(79, 70, 229, 0.12), 0 0 0 1px rgba(79, 70, 229, 0.05)'
+                      },
+                      tap: { 
+                        y: 0,
+                        boxShadow: '0 3px 6px -2px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(79, 70, 229, 0.1)'
+                      }
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 30,
+                      mass: 0.8
+                    }}
+                  >
+                    {/* Subtle gradient background */}
+                    <div className={`absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 group-hover/${platform.icon}:from-primary/5 group-hover/${platform.icon}:to-accent/10 dark:group-hover/${platform.icon}:from-primary/10 dark:group-hover/${platform.icon}:to-accent/15 transition-colors ease-out duration-200 -z-10`}></div>
+                    
+                    {/* Subtle glow effect */}
+                    <div className={`absolute inset-0 opacity-0 group-hover/${platform.icon}:opacity-100 transition-opacity duration-300`}>
+                      <div className="absolute inset-0 rounded-full bg-primary/5 dark:bg-primary/10 blur-lg transform scale-150"></div>
+                    </div>
+                    
+                    {/* Icon with subtle scale and color transition */}
+                    <motion.div
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ 
+                        type: "spring", 
+                        stiffness: 400, 
+                        damping: 15 
+                      }}
+                      className={`relative z-10 text-gray-700 dark:text-gray-300 group-hover/${platform.icon}:text-primary dark:group-hover/${platform.icon}:text-primary transition-colors duration-200`}
                     >
                       <span className="sr-only">{platform.name}</span>
                       {platform.icon === 'github' && (
-                      <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                         </svg>
                       )}
                       {platform.icon === 'linkedin' && (
-                      <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                         </svg>
                       )}
                       {platform.icon === 'email' && (
-                      <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                       )}
-                    </motion.a>
-                  ))}
-                </div>
-                
-                <motion.div 
-                className="text-xs text-gray-500 dark:text-gray-400 flex items-center"
-                  whileHover={{ scale: 1.05, color: '#4F46E5' }}
-                >
+                    </motion.div>
+                  </motion.a>
+                ))}
+              </div>
+              
+              <motion.div 
+                className="text-xs text-gray-500 dark:text-gray-400 flex items-center font-poppins"
+                whileHover={{ scale: 1.05, color: '#4F46E5' }}
+              >
                 <svg className="w-3 h-3 mr-1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M19.5 10C19.5 17 12 23 12 23C12 23 4.5 17 4.5 10C4.5 6.13401 7.6 3 12 3C16.4 3 19.5 6.13401 19.5 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Dhaka, Bangladesh
-                </motion.div>
+                  <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M19.5 10C19.5 17 12 23 12 23C12 23 4.5 17 4.5 10C4.5 6.13401 7.6 3 12 3C16.4 3 19.5 6.13401 19.5 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Dhaka, Bangladesh
               </motion.div>
-            </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

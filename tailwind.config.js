@@ -13,7 +13,7 @@ module.exports = {
         accent: "#ec4899",
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['var(--font-poppins)', 'Inter', 'sans-serif'],
         poppins: ['var(--font-poppins)', 'sans-serif'],
         title: ['var(--font-title)', 'sans-serif'],
       },

@@ -1,57 +1,97 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { throttle } from '../utils/hooks';
+import { usePrefersReducedMotion } from '../utils/mediaUtils';
+import { buttonHover, buttonTap } from '../utils/animations';
+import { useAppContext } from '../utils/AppContext';
 
-export default function ScrollToTop() {
+// Animation variants defined outside component to prevent recreation
+const buttonVariants = {
+  initial: { opacity: 0, scale: 0.5, y: 10 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  exit: { opacity: 0, scale: 0.5, y: 10 }
+};
+
+const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const { setActiveSection } = useAppContext();
 
-  // Show button when page is scrolled down with improved threshold
-  useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
+  // Memoized toggle visibility function
+  const toggleVisibility = useCallback(() => {
+    setIsVisible(window.scrollY > 300);
   }, []);
 
-  // Scroll to top smoothly
-  const scrollToTop = () => {
+  // Throttled scroll handler - memoized with useCallback
+  const throttledToggleVisibility = useCallback(
+    throttle(toggleVisibility, 200),
+    [toggleVisibility]
+  );
+
+  // Set up scroll listener
+  useEffect(() => {
+    window.addEventListener('scroll', throttledToggleVisibility);
+    
+    // Initial check
+    throttledToggleVisibility();
+    
+    return () => {
+      window.removeEventListener('scroll', throttledToggleVisibility);
+    };
+  }, [throttledToggleVisibility]);
+
+  // Scroll to top function - memoized with useCallback
+  const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
     });
-  };
+    
+    // Use a shorter timeout for reduced motion
+    const timeoutDuration = prefersReducedMotion ? 50 : 1000;
+    
+    // Set the active section to 'home' after scrolling
+    const timeoutId = setTimeout(() => {
+      setActiveSection('home');
+    }, timeoutDuration);
+    
+    // Cleanup happens automatically since this is an event handler, not an effect
+  }, [prefersReducedMotion, setActiveSection]);
+
+  // Get transition based on motion preferences
+  const getTransition = useCallback(() => {
+    return {
+      type: prefersReducedMotion ? "tween" : "spring",
+      stiffness: 300,
+      damping: 30,
+      duration: prefersReducedMotion ? 0.2 : undefined
+    };
+  }, [prefersReducedMotion]);
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          initial={{ opacity: 0, scale: 0.5, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.5, y: 10 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={buttonVariants}
+          transition={getTransition()}
           onClick={scrollToTop}
           className="fixed bottom-8 right-8 w-12 h-12 rounded-xl bg-white dark:bg-gray-900 text-primary shadow-lg flex items-center justify-center z-50 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-70 border border-gray-100 dark:border-gray-800 group hover:border-primary dark:hover:border-primary hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
           aria-label="Scroll to top"
-          whileHover={{ 
-            scale: 1.05,
-            boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.5)" 
-          }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={buttonHover}
+          whileTap={buttonTap}
         >
           <div className="relative flex items-center justify-center w-full h-full overflow-hidden">
             {/* Background glow effect */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-gradient-to-tr from-primary to-accent rounded-lg blur-sm transition-opacity duration-300" />
             
-            {/* Arrow icon with animation */}
+            {/* Arrow icon with animation - only animate if motion is not reduced */}
             <motion.div
-              animate={{ y: [0, -2, 0] }}
+              animate={prefersReducedMotion ? undefined : { y: [0, -2, 0] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
             >
               <svg
@@ -75,4 +115,7 @@ export default function ScrollToTop() {
       )}
     </AnimatePresence>
   );
-} 
+};
+
+// Memoize the entire component to prevent unnecessary re-renders
+export default memo(ScrollToTop); 
