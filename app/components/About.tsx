@@ -181,47 +181,59 @@ export default function About() {
               </div>
               
               {/* Location - MOVED TO LEFT */}
-              <motion.div 
-                variants={fadeInScale} 
-                className="bg-white dark:bg-gray-900/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-800"
-              >
-                <h3 className="text-sm font-semibold text-primary uppercase mb-4 tracking-wider">Location</h3>
-                <div className="flex items-start space-x-3">
-                  <svg className="w-5 h-5 text-gray-500 dark:text-gray-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <div>
-                    <p className="font-medium">Dhaka, Bangladesh</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Available for remote work</p>
+              <div className="flex justify-center lg:justify-start">
+                <motion.div 
+                  variants={fadeInScale} 
+                  className="w-72 md:w-96 bg-white dark:bg-gray-900/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-800"
+                >
+                  <h3 className="text-sm font-semibold text-primary uppercase mb-4 tracking-wider">Location</h3>
+                  <div className="flex items-start space-x-3">
+                    <svg className="w-5 h-5 text-gray-500 dark:text-gray-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <div>
+                      <p className="font-medium">Dhaka, Bangladesh</p>
+                      <div className="flex items-center mt-3">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/30 text-green-700 dark:text-green-400 border border-green-200/50 dark:border-green-800/30">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                          </span>
+                          Available for remote work
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
               
               {/* Skills Section */}
-              <motion.div 
-                variants={fadeInScale} 
-                className="bg-white dark:bg-gray-900/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-800"
-              >
-                <h3 className="text-sm font-semibold text-primary uppercase mb-4 tracking-wider">Core Skills</h3>
-                <div className="flex flex-wrap gap-2">
-                  {["Java", "Spring Boot", "Microservices", "React", "JavaScript", "REST API", "Docker", "MySQL", "Oracle", "Git", "TypeScript"].map((skill, i) => (
-                    <motion.span 
-                      key={skill} 
-                      className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-md text-xs font-medium"
-                      variants={itemVariants}
-                      custom={i}
-                      initial="hidden"
-                      animate={isInView ? "visible" : "hidden"}
-                      transition={{ delay: i * 0.05 }}
-                      whileHover={{ scale: 1.05, backgroundColor: "#f0f9ff", color: "#3b82f6" }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {skill}
-                    </motion.span>
-                  ))}
-                </div>
-              </motion.div>
+              <div className="flex justify-center lg:justify-start">
+                <motion.div 
+                  variants={fadeInScale} 
+                  className="w-72 md:w-96 bg-white dark:bg-gray-900/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-800"
+                >
+                  <h3 className="text-sm font-semibold text-primary uppercase mb-4 tracking-wider">Core Skills</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {["Java", "Spring Boot", "Microservices", "React", "JavaScript", "REST API", "Docker", "MySQL", "Oracle", "Git", "TypeScript"].map((skill, i) => (
+                      <motion.span 
+                        key={skill} 
+                        className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-md text-xs font-medium"
+                        variants={itemVariants}
+                        custom={i}
+                        initial="hidden"
+                        animate={isInView ? "visible" : "hidden"}
+                        transition={{ delay: i * 0.05 }}
+                        whileHover={{ scale: 1.05, backgroundColor: "#f0f9ff", color: "#3b82f6" }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {skill}
+                      </motion.span>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
             
             {/* Right column: Experience and Education */}
