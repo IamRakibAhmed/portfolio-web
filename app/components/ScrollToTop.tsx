@@ -17,7 +17,7 @@ const buttonVariants = {
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
-  const { setActiveSection } = useAppContext();
+  const { scrollToSection } = useAppContext();
 
   // Memoized toggle visibility function
   const toggleVisibility = useCallback(() => {
@@ -44,21 +44,9 @@ const ScrollToTop = () => {
 
   // Scroll to top function - memoized with useCallback
   const scrollToTop = useCallback(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: prefersReducedMotion ? 'auto' : 'smooth',
-    });
-    
-    // Use a shorter timeout for reduced motion
-    const timeoutDuration = prefersReducedMotion ? 50 : 1000;
-    
-    // Set the active section to 'home' after scrolling
-    const timeoutId = setTimeout(() => {
-      setActiveSection('home');
-    }, timeoutDuration);
-    
-    // Cleanup happens automatically since this is an event handler, not an effect
-  }, [prefersReducedMotion, setActiveSection]);
+    // Use the scrollToSection function from context
+    scrollToSection('home');
+  }, [scrollToSection]);
 
   // Get transition based on motion preferences
   const getTransition = useCallback(() => {
@@ -80,19 +68,25 @@ const ScrollToTop = () => {
           variants={buttonVariants}
           transition={getTransition()}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 rounded-xl bg-white dark:bg-gray-900 text-primary shadow-lg flex items-center justify-center z-50 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-70 border border-gray-100 dark:border-gray-800 group hover:border-primary dark:hover:border-primary hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+          className="fixed bottom-8 right-8 w-12 h-12 rounded-xl bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-800/80 dark:to-gray-900/70 text-gray-600 dark:text-gray-300 shadow-lg flex items-center justify-center z-50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/30 group hover:border-primary/25 dark:hover:border-primary/20 hover:shadow-md hover:shadow-primary/5 dark:hover:shadow-primary/10 transform hover:-translate-y-1 transition-all duration-300 ease-out"
           aria-label="Scroll to top"
           whileHover={buttonHover}
           whileTap={buttonTap}
         >
           <div className="relative flex items-center justify-center w-full h-full overflow-hidden">
-            {/* Background glow effect */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-gradient-to-tr from-primary to-accent rounded-lg blur-sm transition-opacity duration-300" />
+            {/* Background subtle gradient on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-tr from-primary/5 to-accent/5 dark:from-primary/10 dark:to-accent/10 rounded-lg transition-opacity duration-300" />
+            
+            {/* Subtle glow effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity duration-300">
+              <div className="absolute inset-0 rounded-xl bg-primary/5 dark:bg-primary/10 blur-md transform scale-90"></div>
+            </div>
             
             {/* Arrow icon with animation - only animate if motion is not reduced */}
             <motion.div
               animate={prefersReducedMotion ? undefined : { y: [0, -2, 0] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              className="relative z-10"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

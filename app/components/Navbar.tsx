@@ -8,14 +8,20 @@ import { useAppContext } from '../utils/AppContext';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isScrolled, activeSection } = useAppContext();
+  const { isScrolled, activeSection, scrollToSection } = useAppContext();
   
   const navItems = [
-    { title: 'About', href: '#about' },
-    { title: 'Skills', href: '#skills' },
-    { title: 'Projects', href: '#projects' },
-    { title: 'Contact', href: '#contact' }
+    { title: 'About', href: '#about', id: 'about' },
+    { title: 'Skills', href: '#skills', id: 'skills' },
+    { title: 'Projects', href: '#projects', id: 'projects' },
+    { title: 'Contact', href: '#contact', id: 'contact' }
   ];
+
+  // Handle navigation link click
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault();
+    scrollToSection(sectionId);
+  };
 
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -32,7 +38,7 @@ export default function Navbar() {
             transition={{ duration: 0.5 }}
             className="py-1"
           >
-            <Link href="/" className="relative group inline-block">
+            <Link href="/" className="relative group inline-block" onClick={(e) => handleNavClick(e, 'home')}>
               <div className="flex items-center relative px-1 z-10">
                 <div className="relative flex items-center justify-center h-7 w-7 rounded-md bg-gradient-to-br from-primary/10 via-purple-500/10 to-accent/10 border border-primary/20 z-10 overflow-hidden group-hover:border-primary/40 transition-all duration-300 group-hover:shadow-sm">
                   <span className="flex items-center bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent group-hover:from-accent group-hover:via-purple-500 group-hover:to-primary transition-all duration-500">
@@ -89,13 +95,14 @@ export default function Navbar() {
                 <Link 
                   href={item.href}
                   className={`py-2 px-3 text-sm rounded-full transition-all ${
-                    activeSection === item.title.toLowerCase() 
+                    activeSection === item.id 
                       ? 'text-primary font-medium' 
                       : 'text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary'
                   }`}
+                  onClick={(e) => handleNavClick(e, item.id)}
                 >
                   {item.title}
-                  {activeSection === item.title.toLowerCase() && (
+                  {activeSection === item.id && (
                     <motion.span
                       layoutId="activeSection"
                       className="absolute inset-0 bg-primary/5 dark:bg-primary/10 rounded-full -z-10"
@@ -185,11 +192,14 @@ export default function Navbar() {
                     <Link 
                       href={item.href}
                       className={`block py-2 px-3 rounded-md transition-colors ${
-                        activeSection === item.title.toLowerCase() 
+                        activeSection === item.id 
                           ? 'bg-primary/5 dark:bg-primary/10 text-primary font-medium' 
                           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                       }`}
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={(e) => {
+                        handleNavClick(e, item.id);
+                        setIsMobileMenuOpen(false);
+                      }}
                     >
                       {item.title}
                     </Link>
